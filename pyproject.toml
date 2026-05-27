@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nanoindex"
+version = "0.1.0"
+description = "Compressed vector index for RAG pipelines — 7-10× storage reduction, no training required"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+fast = [
+    "numba>=0.58",
+]
+langchain = [
+    "langchain-core>=0.2",
+]
+llamaindex = [
+    "llama-index-core>=0.10",
+]
+bench = [
+    "faiss-cpu>=1.7",
+]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.1",
+    "numba>=0.58",
+]
+
+[project.urls]
+Repository = "https://github.com/dhruvnadamuni/nanoindex"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["nanoindex*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
