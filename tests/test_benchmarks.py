@@ -91,7 +91,7 @@ def test_faiss_sq_memory_bytes(unit_vecs):
 
 def test_brute_force_is_ground_truth_for_recall(unit_vecs):
     """TurboQuant recall vs brute-force — smoke test that recalls are in [0,1]."""
-    from turboquant_f1.quantization.turbo_quant import TurboQuant
+    from nanoindex.quantization.turbo_quant import TurboQuant
 
     tq = TurboQuant(dim=DIM, bits=4, qjl_m=16, seed=0)
     db = tq.compress(unit_vecs)
