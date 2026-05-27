@@ -25,10 +25,10 @@ NanoIndex compresses embeddings to 3–4 bits per value using a two-stage algori
 ## Install
 
 ```bash
-pip install nanoindex           # core only (numpy)
-pip install nanoindex[fast]     # + Numba JIT (~15× faster search)
-pip install nanoindex[langchain]
-pip install nanoindex[llamaindex]
+pip install nanoindex-rag           # core only (numpy)
+pip install nanoindex-rag[fast]     # + Numba JIT (~15× faster search)
+pip install nanoindex-rag[langchain]
+pip install nanoindex-rag[llamaindex]
 ```
 
 ---
@@ -134,7 +134,7 @@ Measured on 22K vectors, dim=384 (2023 F1 Bahrain GP telemetry embeddings, `all-
 Run benchmarks on your own data:
 
 ```bash
-pip install nanoindex[bench]
+pip install nanoindex-rag[bench]
 python benchmarks/run_benchmarks.py --embeddings your_embeddings.npz --bits 4
 ```
 
@@ -200,7 +200,7 @@ class SearchResult:
 
 - Python ≥ 3.10
 - numpy ≥ 1.24
-- numba ≥ 0.58 *(optional, recommended — `pip install nanoindex[fast]`)*
+- numba ≥ 0.58 *(optional, recommended — `pip install nanoindex-rag[fast]`)*
 
 ---
 
