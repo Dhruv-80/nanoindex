@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from turboquant_f1.quantization.qjl import QJL
+from nanoindex.quantization.qjl import QJL
 
 DIM = 384
 M   = 64
