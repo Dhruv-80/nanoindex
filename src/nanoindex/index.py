@@ -10,8 +10,8 @@ from typing import Any
 
 import numpy as np
 
-from .quantization.turbo_quant import CompressedDB, TurboQuant
 from .filters import apply_filters
+from .quantization.turbo_quant import CompressedDB, TurboQuant
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +74,9 @@ class NanoIndex:
                 f"embeddings ({len(embeddings)}) and metadata ({len(metadata)}) must match"
             )
 
-        logger.info("Compressing %d vectors (bits=%d, qjl_m=%d)…", len(embeddings), self.bits, self.qjl_m)
+        logger.info(
+            "Compressing %d vectors (bits=%d, qjl_m=%d)…", len(embeddings), self.bits, self.qjl_m
+        )
         self._db   = self.tq.compress(embeddings)
         self._meta = [dict(m) for m in metadata]
         logger.info("Done. Compressed size: %.1f MB", self.tq.memory_mb(len(embeddings)))

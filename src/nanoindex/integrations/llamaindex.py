@@ -15,7 +15,7 @@ results = index.as_query_engine().query("your question")
 
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import Any
 
 import numpy as np
 

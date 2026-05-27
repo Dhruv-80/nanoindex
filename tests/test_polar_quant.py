@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from turboquant_f1.quantization.polar_quant import PolarQuant
+from nanoindex.quantization.polar_quant import PolarQuant
 
 DIM = 384
 BITS = 3
@@ -134,7 +134,9 @@ def test_inner_product_exact_for_uncompressed():
     assert mae < 0.01, f"MAE {mae:.4f} too high at 8 bits"
 
 
-def _clustered_vectors(n_clusters: int = 20, per_cluster: int = 25, cosine_sim: float = 0.85, seed: int = 0) -> np.ndarray:
+def _clustered_vectors(
+    n_clusters: int = 20, per_cluster: int = 25, cosine_sim: float = 0.85, seed: int = 0
+) -> np.ndarray:
     """
     Vectors where each has exactly `cosine_sim` similarity to its cluster center.
     Within-cluster pair IP ≈ cosine_sim² ≈ 0.72; across-cluster ≈ 0.
@@ -167,7 +169,9 @@ def test_inner_product_recall_at_10():
         q = v[i]
         approx = pq4.inner_product_batch(q, angles, radii)
         exact  = v @ q
-        recalls.append(len(set(np.argsort(approx)[::-1][:k]) & set(np.argsort(exact)[::-1][:k])) / k)
+        top_approx = set(np.argsort(approx)[::-1][:k])
+        top_exact  = set(np.argsort(exact)[::-1][:k])
+        recalls.append(len(top_approx & top_exact) / k)
 
     mean_recall = np.mean(recalls)
     assert mean_recall >= 0.7, f"Recall@10 = {mean_recall:.2f}, expected >= 0.70"

@@ -1,11 +1,12 @@
 """Integration tests for the combined TurboQuant pipeline."""
 
+import os
+import tempfile
+
 import numpy as np
 import pytest
-import tempfile
-import os
 
-from turboquant_f1.quantization.turbo_quant import TurboQuant
+from nanoindex.quantization.turbo_quant import TurboQuant
 
 DIM  = 384
 BITS = 3
@@ -77,7 +78,9 @@ def test_inner_product_self_is_highest(tq, unit_vectors, compressed):
         assert i in top3, f"Query {i} not in its own top-3: {top3}"
 
 
-def _clustered_vectors(n_clusters: int = 20, per_cluster: int = 25, cosine_sim: float = 0.85) -> np.ndarray:
+def _clustered_vectors(
+    n_clusters: int = 20, per_cluster: int = 25, cosine_sim: float = 0.85
+) -> np.ndarray:
     rng = np.random.default_rng(7)
     centers = rng.standard_normal((n_clusters, DIM)).astype(np.float32)
     centers /= np.linalg.norm(centers, axis=1, keepdims=True)
@@ -109,7 +112,9 @@ def test_recall_at_10_clustered():
         q = v[i]
         approx = tq4.inner_product_batch(q, db)
         exact  = v @ q
-        recalls.append(len(set(np.argsort(approx)[::-1][:k]) & set(np.argsort(exact)[::-1][:k])) / k)
+        top_approx = set(np.argsort(approx)[::-1][:k])
+        top_exact  = set(np.argsort(exact)[::-1][:k])
+        recalls.append(len(top_approx & top_exact) / k)
 
     mean_recall = np.mean(recalls)
     # QJL SNR at 4-bit is ~1 (noise ≈ signal), so it adds marginal benefit over
@@ -119,7 +124,7 @@ def test_recall_at_10_clustered():
 
 def test_qjl_improves_recall(unit_vectors):
     """TurboQuant (PolarQuant + QJL) should outperform PolarQuant alone."""
-    from turboquant_f1.quantization.polar_quant import PolarQuant
+    from nanoindex.quantization.polar_quant import PolarQuant
 
     pq  = PolarQuant(dim=DIM, bits=BITS, seed=0)
     tq_ = TurboQuant(dim=DIM, bits=BITS, qjl_m=QJL_M, seed=0)
@@ -141,7 +146,8 @@ def test_qjl_improves_recall(unit_vectors):
         tq_recalls.append(len(set(np.argsort(tq_scores)[::-1][:k]) & top_exact) / k)
 
     assert np.mean(tq_recalls) >= np.mean(pq_recalls), (
-        f"TurboQuant recall {np.mean(tq_recalls):.2f} not >= PolarQuant recall {np.mean(pq_recalls):.2f}"
+        f"TurboQuant recall {np.mean(tq_recalls):.2f} not >= "
+        f"PolarQuant recall {np.mean(pq_recalls):.2f}"
     )
 
 

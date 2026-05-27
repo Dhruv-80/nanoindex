@@ -203,7 +203,9 @@ class PolarQuant:
         N = len(radii)
         current_q = None
 
-        for level_idx, (n_pairs, n_unp) in enumerate(zip(self.level_n_pairs, self.level_n_unpaired)):
+        for level_idx, (n_pairs, n_unp) in enumerate(
+            zip(self.level_n_pairs, self.level_n_unpaired)
+        ):
             offset    = self.angle_offsets[level_idx]
             level_ints = angles_int[:, offset:offset + n_pairs]
             cos_a = self.cos_lut[level_ints]

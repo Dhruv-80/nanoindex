@@ -11,8 +11,8 @@ Achieves 7-10× storage reduction with no training required.
     results = idx.search(query, k=10)
 """
 
-from .index import NanoIndex, SearchResult
 from .filters import apply_filters
+from .index import NanoIndex, SearchResult
 
 __all__ = ["NanoIndex", "SearchResult", "apply_filters"]
 __version__ = "0.1.0"
