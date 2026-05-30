@@ -15,4 +15,4 @@ from .filters import apply_filters
 from .index import NanoIndex, SearchResult
 
 __all__ = ["NanoIndex", "SearchResult", "apply_filters"]
-__version__ = "0.1.0"
+__version__ = "0.1.1"

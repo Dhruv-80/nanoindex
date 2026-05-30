@@ -19,3 +19,14 @@ data/
 !examples/**/*.json
 .env
 .DS_Store
+
+# F1-specific / legacy files not part of nanoindex-rag
+src/turboquant_f1/
+configs/
+default.yaml
+turboquant-f1-implementation-plan.md
+
+# Virtual environments and generated outputs
+venv/
+examples/venv/
+examples/**/*.json

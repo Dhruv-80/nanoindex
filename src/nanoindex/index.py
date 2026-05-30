@@ -81,6 +81,10 @@ class NanoIndex:
         self._meta = [dict(m) for m in metadata]
         logger.info("Done. Compressed size: %.1f MB", self.tq.memory_mb(len(embeddings)))
 
+        # Warm up Numba JIT so the first real query isn't penalised by compilation
+        _dummy = np.zeros(self.dim, dtype=np.float32)
+        self.tq.inner_product_batch(_dummy, self._db)
+
     # ------------------------------------------------------------------
     # Searching
     # ------------------------------------------------------------------
